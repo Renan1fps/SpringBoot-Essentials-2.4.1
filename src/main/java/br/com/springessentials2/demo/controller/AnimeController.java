@@ -3,9 +3,9 @@ package br.com.springessentials2.demo.controller;
 import br.com.springessentials2.demo.domain.Anime;
 import br.com.springessentials2.demo.service.AnimeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +18,17 @@ public class AnimeController {
     private final AnimeService animeService;
 
     @GetMapping
-    public List<Anime> list() {
-        return animeService.listAll();
+    public ResponseEntity<List<Anime>> list() {
+        return ResponseEntity.ok(animeService.listAll());
+    }
+
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Anime> findById(@PathVariable long id) {
+        return ResponseEntity.ok(animeService.findById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<Anime> save(@RequestBody Anime anime) {
+        return new ResponseEntity<>(animeService.save(anime),HttpStatus.CREATED);
     }
 }

@@ -7,6 +7,8 @@ import lombok.Data;
 @AllArgsConstructor// vai gerar construtores com todos atributos;
 public class Anime {
     private Long id;
+
+    //@JsonProperty("name") para caso do json nao reconhecer o atributo;
     private String name;
 
 
