@@ -1,6 +1,7 @@
 package br.com.springessentials2.demo.service;
 
 import br.com.springessentials2.demo.domain.Anime;
+import br.com.springessentials2.demo.exception.BadRequestException;
 import br.com.springessentials2.demo.mapper.AnimeMapper;
 import br.com.springessentials2.demo.repository.AnimeRepository;
 import br.com.springessentials2.demo.requests.AnimePostRequestBody;
@@ -28,7 +29,7 @@ public class AnimeService {
 
     public Anime findByIOrThrowBadRequestException(long id) {
         return animeRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id not found"));
+                .orElseThrow(() -> new BadRequestException("Id not found"));
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
