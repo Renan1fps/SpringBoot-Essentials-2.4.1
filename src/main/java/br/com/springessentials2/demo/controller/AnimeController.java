@@ -29,6 +29,11 @@ public class AnimeController {
         return ResponseEntity.ok(animeService.findByIOrThrowBadRequestException(id));
     }
 
+    @GetMapping(path = "/find") //http://localhost:8080/animes/find?name=Naruto%20shippuden
+    public ResponseEntity<List<Anime>> findByName(@RequestParam String name) {
+        return ResponseEntity.ok(animeService.findByName(name));
+    }
+
     @PostMapping
     public ResponseEntity<Anime> save(@RequestBody AnimePostRequestBody animePostRequestBody) {
         return new ResponseEntity<>(animeService.save(animePostRequestBody), HttpStatus.CREATED);
