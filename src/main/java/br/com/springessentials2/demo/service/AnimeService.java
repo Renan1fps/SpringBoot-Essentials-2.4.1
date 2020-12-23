@@ -1,6 +1,7 @@
 package br.com.springessentials2.demo.service;
 
 import br.com.springessentials2.demo.domain.Anime;
+import br.com.springessentials2.demo.mapper.AnimeMapper;
 import br.com.springessentials2.demo.repository.AnimeRepository;
 import br.com.springessentials2.demo.requests.AnimePostRequestBody;
 import br.com.springessentials2.demo.requests.AnimePutRequestBody;
@@ -27,7 +28,7 @@ public class AnimeService {
     }
 
     public Anime save(AnimePostRequestBody animePostRequestBody) {
-        return animeRepository.save(Anime.builder().name(animePostRequestBody.getName()).build());
+        return animeRepository.save(AnimeMapper.INSTANCE.toAnime(animePostRequestBody));
     }
 
     public void delete(long id) {
@@ -36,10 +37,10 @@ public class AnimeService {
 
     public void replace(AnimePutRequestBody animePutRequestBody) {
         Anime animeSaved = findByIOrThrowBadRequestException(animePutRequestBody.getId());
-        Anime anime = Anime.builder()
-                .name(animePutRequestBody.getName())
-                .id(animeSaved.getId()).build();
+        Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
+        anime.setId(animeSaved.getId());
         animeRepository.save(anime);
 
     }
 }
+
