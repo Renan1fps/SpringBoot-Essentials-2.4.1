@@ -8,7 +8,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 @Log4j2
@@ -26,15 +25,31 @@ public class SpringClient {
         //@formatter:on
         log.info(exchange.getBody());
 
-        Anime kingdom= Anime.builder().name("kingdom").build();
+        Anime kingdom = Anime.builder().name("kingdom").build();
         Anime animePost = new RestTemplate().postForObject("http://localhost:8080/animes/", kingdom, Anime.class);
-        log.info("Anime saved {}",animePost );
-
+        log.info("Anime saved {}", animePost);
         //@formatter:off
+
         Anime cavaleiros= Anime.builder().name("Cavaleiros").build();
-        new RestTemplate().exchange("http://localhost:8080/animes/",HttpMethod.POST,
-                                         new HttpEntity<>(cavaleiros),Anime.class);
+        ResponseEntity<Anime> cavaleirosPost = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.POST,
+                new HttpEntity<>(cavaleiros),Anime.class);
         //@formatter:on
-        log.info("saved anime{}",cavaleiros);
+        log.info("saved anime{}", cavaleirosPost);
+
+        Anime animeUpdate = cavaleirosPost.getBody();
+        animeUpdate.setName("Cavaleiros 2");
+
+        ResponseEntity<Void> updateAnimePut = new RestTemplate().exchange("http://localhost:8080/animes/",
+                HttpMethod.PUT,
+                new HttpEntity<>(animeUpdate), Void.class);
+        log.info("Update anime{}", updateAnimePut);
+
+
+        ResponseEntity<Void> deleteAnime = new RestTemplate().exchange("http://localhost:8080/animes/{id}",
+                HttpMethod.DELETE, null, Void.class, animeUpdate.getId());
+        log.info(deleteAnime);
+
+
     }
 }
