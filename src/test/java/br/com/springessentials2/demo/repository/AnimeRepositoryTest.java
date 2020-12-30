@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +54,7 @@ class AnimeRepositoryTest {
         Assertions.assertThat(update.getName()).isEqualTo(save.getName());
 
     }
-    
+
     @Test
     @DisplayName("Delete removes anime when successful")
     void delete_RemoveAnime_WhenSuccessful() {
@@ -95,6 +97,17 @@ class AnimeRepositoryTest {
 
         Assertions.assertThat(byName).isEmpty();
 
+    }
+
+    @Test
+    @DisplayName("Save throw ConstraintViolationException when name is empty ")
+    void save_ThrowsConstraintViolationException_WhenNameISEmpty() {
+        Anime anime = new Anime();
+
+        Assertions.assertThatThrownBy(() -> this.animeRepository.save(anime)).isInstanceOf(
+                ConstraintViolationException.class
+        );
+        
     }
 
     private Anime createdAnime() {
