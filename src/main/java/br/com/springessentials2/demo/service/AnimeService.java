@@ -32,7 +32,7 @@ public class AnimeService {
         return animeRepository.findByName(name);
     }
 
-    public Anime findByIOrThrowBadRequestException(long id) {
+    public Anime findByIdOrThrowBadRequestException(long id) {
         return animeRepository.findById(id)
                 .orElseThrow(() -> new BadRequestException("Id not found"));
     }
@@ -44,11 +44,11 @@ public class AnimeService {
     }
 
     public void delete(long id) {
-        animeRepository.delete(findByIOrThrowBadRequestException(id));
+        animeRepository.delete(findByIdOrThrowBadRequestException(id));
     }
 
     public void replace(AnimePutRequestBody animePutRequestBody) {
-        Anime animeSaved = findByIOrThrowBadRequestException(animePutRequestBody.getId());
+        Anime animeSaved = findByIdOrThrowBadRequestException(animePutRequestBody.getId());
         Anime anime = AnimeMapper.INSTANCE.toAnime(animePutRequestBody);
         anime.setId(animeSaved.getId());
         animeRepository.save(anime);
