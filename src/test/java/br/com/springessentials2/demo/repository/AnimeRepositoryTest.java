@@ -1,13 +1,13 @@
 package br.com.springessentials2.demo.repository;
 
 import br.com.springessentials2.demo.domain.Anime;
+import br.com.springessentials2.demo.util.AnimeCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Optional;
@@ -23,7 +23,7 @@ class AnimeRepositoryTest {
     @DisplayName("Save creates anime when successful")
     void save_PersistAnime_WhenSuccessful() {
 
-        Anime animeToBeSaved = createdAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnime();
 
         Anime save = animeRepository.save(animeToBeSaved);
 
@@ -39,7 +39,7 @@ class AnimeRepositoryTest {
     @DisplayName("Save update anime when successful")
     void save_UpdatedAnime_WhenSuccessful() {
 
-        Anime animeToBeSaved = createdAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnime();
 
         Anime save = animeRepository.save(animeToBeSaved);
 
@@ -59,7 +59,7 @@ class AnimeRepositoryTest {
     @DisplayName("Delete removes anime when successful")
     void delete_RemoveAnime_WhenSuccessful() {
 
-        Anime animeToBeSaved = createdAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnime();
 
         Anime save = animeRepository.save(animeToBeSaved);
 
@@ -74,7 +74,7 @@ class AnimeRepositoryTest {
     @DisplayName("Find by name return list of anime when successful")
     void findByName_ReturnAnime_WhenSuccessful() {
 
-        Anime animeToBeSaved = createdAnime();
+        Anime animeToBeSaved = AnimeCreator.createAnime();
 
         Anime save = animeRepository.save(animeToBeSaved);
 
@@ -110,8 +110,6 @@ class AnimeRepositoryTest {
         
     }
 
-    private Anime createdAnime() {
-        return Anime.builder().name("Bob esponja").build();
-    }
+
 
 }
