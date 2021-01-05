@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,6 +29,7 @@ public class AnimeController {
     public ResponseEntity<Page<Anime>> list(Pageable pageable) {
         return ResponseEntity.ok(animeService.listAll(pageable));
     }
+
     @GetMapping(path = "/all")
     public ResponseEntity<List<Anime>> listAll() {
         return ResponseEntity.ok(animeService.listAllNoPageable());
@@ -34,6 +37,12 @@ public class AnimeController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Anime> findById(@PathVariable long id) {
+        return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
+    }
+
+    @GetMapping(path = "by-id/{id}")
+    public ResponseEntity<Anime> findByIdAuthenticationPrincipal(@PathVariable Long id,
+                                                                 @AuthenticationPrincipal UserDetails userDetails) {
         return ResponseEntity.ok(animeService.findByIdOrThrowBadRequestException(id));
     }
 
@@ -54,8 +63,9 @@ public class AnimeController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
+
     @PutMapping
-    public ResponseEntity<Void>replace(@RequestBody AnimePutRequestBody animePutRequestBody){
+    public ResponseEntity<Void> replace(@RequestBody AnimePutRequestBody animePutRequestBody) {
         animeService.replace(animePutRequestBody);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
