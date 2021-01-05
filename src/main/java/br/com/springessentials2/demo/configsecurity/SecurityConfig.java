@@ -38,16 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         log.info("password encoder{}", passwordEncoder.encode("20030927"));
-        log.info("password encoder{}", passwordEncoder.encode("bradstore"));
+        log.info("password encoder{}", passwordEncoder.encode("20030927"));
 
         auth.inMemoryAuthentication()
                 .withUser("Renan")
                 .password(passwordEncoder.encode("20030927"))
-                .roles("USER", "ADMIN")
+                .roles("USER")
                 .and()
-                .withUser("Emerson")
-                .password(passwordEncoder.encode("bradstore"))
-                .roles("USER");
+                .withUser("emerson")
+                .password(passwordEncoder.encode("20030927"))
+                .roles("USER", "ADMIN");
         auth.userDetailsService(devDojoUserDetailsService).passwordEncoder(passwordEncoder);
 
     }
